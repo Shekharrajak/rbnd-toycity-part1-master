@@ -26,7 +26,28 @@ puts "|_|                                       "
   # Calculate and print the average price the toy sold for
   # Calculate and print the average discount (% or $) based off the average sales price
 
+brand_list = []
+indx = 0
+products_hash['items'].each do |_item|
+  brand_list.push(_item['brand']) unless brand_list.include? _item['brand']
+  indx += 1
+  puts " Item " + indx.to_s + " title is : " + _item['title']
+  puts " Item " + indx.to_s + " full price : " + _item['full-price']
 
+  puts " totle purchases #{_item['purchases'].length}"
+
+  total_sales = 0
+  _item['purchases'].each do |_purchases|
+    total_sales += _purchases['price']
+  end
+
+  puts " total amount of sales : " + total_sales.to_s
+  avg = total_sales.to_f / _item['purchases'].length.to_f
+  puts " avg price : " + avg.to_s
+  puts " avg discount is : #{(_item["full-price"].to_f - avg).to_f}"
+
+  puts "------------------------------------"
+end
 
 puts " _                         _     "
 puts "| |                       | |    "
@@ -41,3 +62,22 @@ puts ""
   # Count and print the number of the brand's toys we stock
   # Calculate and print the average price of the brand's toys
   # Calculate and print the total revenue of all the brand's toy sales combined
+
+brand_list.each do |_brand|
+  puts "brand : #{_brand}"
+  total_stock = 0
+  total_price = 0
+  total_sale = 0
+  brand_products = products_hash['items'].select {|_item| _item['brand'] == _brand}
+
+  brand_products.each do |_product|
+    total_stock += _product['stock']
+    total_price += _product['full-price'].to_f
+    total_sale += _product['purchases'].length
+  end
+
+  puts "total_stock : " + total_stock.to_s
+  puts "avg price : " + (total_price / brand_products.length).to_s
+  puts "total_sale : " + total_sale.to_s
+  puts "------------------------------------------------------------------------"
+end

@@ -73,7 +73,9 @@ brand_list.each do |_brand|
   brand_products.each do |_product|
     total_stock += _product['stock']
     total_price += _product['full-price'].to_f
-    total_sale += _product['purchases'].length
+    _product['purchases'].each do |_purchases|
+      total_sale += _purchases['price'].round(3)
+    end
   end
 
   puts "total_stock : " + total_stock.to_s
